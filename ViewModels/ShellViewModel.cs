@@ -36,13 +36,13 @@ namespace FirstsStepsRUI.ViewModels
             SetInterfaceByUser();
             SetInterface();
             HostScreen.Router.Navigate.Execute(LoginViewModel);
-            this.WhenAny(vm => vm.LoginViewModel.User, lvm => lvm.Value).Subscribe(user => User = user);
+            this.WhenAnyValue(vm => vm.LoginViewModel.User).Subscribe(user => User = user);
         }
 
         private void SetInterfaceByUser()
         {
             // Set the Menu user to have an updated option list
-            this.WhenAny(vm => vm.User, user => user.Value).Subscribe(user => MenuViewModel.User = user);
+            this.WhenAnyValue(vm => vm.User).Subscribe(user => MenuViewModel.User = user);
         }
 
         private void SetInterface()
