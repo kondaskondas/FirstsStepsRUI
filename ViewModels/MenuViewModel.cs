@@ -34,8 +34,8 @@ namespace FirstsStepsRUI.ViewModels
                 throw new ArgumentNullException("userRepository");
             _userRepository = userRepository;
             Menu = new ReactiveList<MenuOptionViewModel>();
-            // Use WhenAnyValue to observe one or more values
-            var canLoadMenu = this.WhenAnyValue(m => m.User, user => user != null && user.Active);
+            // Use WhenAny to observe one or more values
+            var canLoadMenu = this.WhenAny(m => m.User, user => user.Value != null);
             // hook function to command, shouldn't contain UI/complex logic
             LoadMenu = ReactiveCommand.CreateAsyncTask(canLoadMenu, _ => _userRepository.GetMenuByUser(User));
             // RxApp.MainThreadScheduler is our UI thread, you can go wild here
@@ -53,9 +53,9 @@ namespace FirstsStepsRUI.ViewModels
                 Menu.Clear();
                 MessageBox.Show(ex.Message);
             });
-            // Use WhenAny to check if a property was changed
+            // Use WhenAnyValue to check if a property was changed
             // If user was changed reload menu
-            this.WhenAny(m => m.User, user => user.Value).InvokeCommand(this, vm => vm.LoadMenu);
+            this.WhenAnyValue(m => m.User).InvokeCommand(this, vm => vm.LoadMenu);
         }
     }
 }
