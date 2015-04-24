@@ -6,14 +6,14 @@ namespace FirstsStepsRUI.Models
     {
         public int Id { get; private set; }
         public string Code { get; private set; }
-        public bool Active { get; private set; }
-        public UserGroup Group { get; private set; }
+        public bool Blocked { get; set; }
+        public UserGroup Group { get; set; }
 
-        public User(int id, string code, bool active, UserGroup userGroup)
+        public User(int id, string code, bool blocked, UserGroup userGroup)
         {
             Id = id;
             Code = code;
-            Active = active;
+            Blocked = blocked;
             Group = userGroup;
         }
 
