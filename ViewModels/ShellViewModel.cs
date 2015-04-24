@@ -58,7 +58,7 @@ namespace FirstsStepsRUI.ViewModels
                         HostScreen.Router.Navigate.Execute(LoginViewModel);
                         break;
                     case MenuOption.User:
-                        HostScreen.Router.Navigate.Execute(new UserViewModel(HostScreen, User));
+                        HostScreen.Router.Navigate.Execute(new UserViewModel(HostScreen, User, _userRepository));
                         break;
                     case MenuOption.Placeholder:
                         HostScreen.Router.Navigate.Execute(new PlaceHolderViewModel(HostScreen));

@@ -6,15 +6,10 @@
              xmlns:models="clr-namespace:FirstsStepsRUI.Models"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <!--<UserControl.Resources>
-    <ResourceDictionary>
-        <models:UserGroupConverter x:Key="UserGroupConverter" />
-    </ResourceDictionary>
-    </UserControl.Resources>-->
     <Grid>
         <StackPanel>
-            <TextBlock Text="Welcome"></TextBlock>
-            <TextBlock x:Name="User"></TextBlock>
+            <TextBlock Text="UserName"></TextBlock>
+            <TextBox x:Name="UserName"></TextBox>
             <TextBlock Text="Group"></TextBlock>
             <ComboBox x:Name="Group">
                 <ComboBox.ItemTemplate>
@@ -25,6 +20,7 @@
             </ComboBox>
             <TextBlock Text="Write something here:"></TextBlock>
             <TextBox x:Name="Write"></TextBox>
+            <Button x:Name="Submit" Content="Sumit"></Button>
         </StackPanel>
     </Grid>
 </UserControl>

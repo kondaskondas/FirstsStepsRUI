@@ -8,5 +8,6 @@ namespace FirstsStepsRUI.Repositories
     {
         Task<User> Login(string userName, string unsecurePassword);
         Task<IList<Menu>> GetMenuByUser(User user);
+        Task<bool> Submit(User user);
     }
 }

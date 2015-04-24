@@ -64,5 +64,22 @@ namespace FirstsStepsRUI.Repositories
 
             return await Task.FromResult(result);
         }
+
+        public async Task<bool> Submit(User user)
+        {
+            bool submitted;
+            if (user.Blocked)
+                throw new Exception("User blocked.");
+            var userDb = _users.FirstOrDefault(e => e.Id == user.Id);
+            if (userDb != null)
+            {
+                userDb.Group = user.Group;
+                submitted = true;
+            }
+            else
+                submitted = false;
+
+            return submitted;
+        }
     }
 }

@@ -5,7 +5,7 @@ namespace FirstsStepsRUI.Models
     public class User
     {
         public int Id { get; private set; }
-        public string Code { get; private set; }
+        public string Code { get; set; }
         public bool Blocked { get; set; }
         public UserGroup Group { get; set; }
 
