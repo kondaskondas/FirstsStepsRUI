@@ -1,5 +1,7 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
+using FirstsStepsRUI.Models;
 using FirstsStepsRUI.ViewModels;
 using ReactiveUI;
 
@@ -25,6 +27,8 @@ namespace FirstsStepsRUI.Views
         public UserView()
         {
             InitializeComponent();
+            Group.ItemsSource = Enum.GetValues(typeof(UserGroup));
+            this.WhenAnyValue(e => e.Group.SelectedValue).BindTo(this, e => e.ViewModel.Group);
             this.Bind(ViewModel, vm => vm.User.Code, v => v.User.Text);
             this.Bind(ViewModel, vm => vm.Message, v => v.Write.Text);
         }

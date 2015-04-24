@@ -21,6 +21,17 @@ namespace FirstsStepsRUI.Models
         {
             return String.Format("{0}: {1}", Id, Code);
         }
+
+        public static string GetGroupName(UserGroup group)
+        {
+            switch (group)
+            {
+                case UserGroup.Admin:
+                    return "Administrator";
+                default:
+                    return group.ToString();
+            }
+        }
     }
 
     public enum UserGroup

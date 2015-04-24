@@ -9,6 +9,14 @@
         <StackPanel>
             <TextBlock Text="Welcome"></TextBlock>
             <TextBlock x:Name="User"></TextBlock>
+            <TextBlock Text="Group"></TextBlock>
+            <ComboBox x:Name="Group">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Converter={StaticResource UserGroupConverter}}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
             <TextBlock Text="Write something here:"></TextBlock>
             <TextBox x:Name="Write"></TextBox>
         </StackPanel>
