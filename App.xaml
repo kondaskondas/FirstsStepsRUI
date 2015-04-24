@@ -1,7 +1,12 @@
 ﻿<Application x:Class="FirstsStepsRUI.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:models="clr-namespace:FirstsStepsRUI.Models">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <!--if you don't user mergedDictionaries the usercontrols won't find the resources-->
+            <ResourceDictionary.MergedDictionaries />
+            <models:UserGroupConverter x:Key="UserGroupConverter" />
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

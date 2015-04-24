@@ -78,6 +78,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\Credentials.cs" />
+    <Compile Include="Models\UserGroupConverter.cs" />
     <Compile Include="Repositories\Abstracts\IUserRepository.cs" />
     <Compile Include="Repositories\Concretes\AppBootstrapper.cs" />
     <Compile Include="Repositories\Concretes\Extensions.cs" />

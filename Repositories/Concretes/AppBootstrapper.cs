@@ -28,8 +28,6 @@ namespace FirstsStepsRUI.Repositories
             Locator.CurrentMutable.Register(() => new PlaceHolderView(), typeof(IViewFor<PlaceHolderViewModel>));
             Locator.CurrentMutable.Register(() => new LoginView(), typeof(IViewFor<LoginViewModel>));
             Locator.CurrentMutable.Register(() => new UserView(), typeof(IViewFor<UserViewModel>));
-            // This is our main window
-            ((ShellView)Locator.Current.GetService<IViewFor<ShellViewModel>>()).Show();
         }
     }
 }
