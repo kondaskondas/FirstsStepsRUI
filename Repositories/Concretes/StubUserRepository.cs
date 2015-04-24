@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using FirstsStepsRUI.Models;
 
@@ -7,6 +8,24 @@ namespace FirstsStepsRUI.Repositories
 {
     public class StubUserRepository : IUserRepository
     {
+        private readonly List<User> _users;
+        private readonly List<Credential> _credentials;
+
+        public StubUserRepository()
+        {
+            _users = new List<User>
+            {
+                new User(1, "Admin", false, UserGroup.Admin),
+                new User(2, "Generic", true, UserGroup.Worker)
+            };
+
+            _credentials = new List<Credential>
+            {
+                new Credential(_users.First(e => e.Id == 1), "correct horse battery staple"),
+                new Credential(_users.First(e => e.Id == 2), "Generic")
+            };
+        }
+
         public async Task<User> Login(string userName, string unsecurePassword)
         {
             User result;
@@ -15,15 +34,11 @@ namespace FirstsStepsRUI.Repositories
             if (unsecurePassword.IsInvalid())
                 throw new ArgumentException("unsecurePassword");
             // TODO real call to DB
-            if (userName == "admin")
-            {
-                if (unsecurePassword == "correct horse battery staple")
-                    result = new User(1, "1337", true, UserGroup.Admin);
-                else
-                    throw new Exception("Invalid credentials.");
-            }
-            else
-                result = new User(2, "Generic", true, UserGroup.Worker);
+            result = _users.Where(e => e.Code == userName)
+                    .Join(_credentials.Where(e => e.Password == unsecurePassword), user => user.Id,credential => credential.User.Id,(user, credential) => user)
+                    .FirstOrDefault();
+            if (result == null)
+                throw new Exception("Not found.");
 
             return await Task.FromResult(result);
         }
