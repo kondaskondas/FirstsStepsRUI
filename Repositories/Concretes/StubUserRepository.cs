@@ -28,13 +28,12 @@ namespace FirstsStepsRUI.Repositories
 
         public async Task<User> Login(string userName, string unsecurePassword)
         {
-            User result;
             if (userName.IsInvalid())
                 throw new ArgumentException("userName");
             if (unsecurePassword.IsInvalid())
                 throw new ArgumentException("unsecurePassword");
             // TODO real call to DB
-            result = _users.Where(e => e.Code == userName)
+            User result = _users.Where(e => e.Code == userName)
                     .Join(_credentials.Where(e => e.Password == unsecurePassword), user => user.Id,credential => credential.User.Id,(user, credential) => user)
                     .FirstOrDefault();
             if (result == null)
@@ -45,11 +44,10 @@ namespace FirstsStepsRUI.Repositories
 
         public async Task<IList<Menu>> GetMenuByUser(User user)
         {
-            List<Menu> result;
             if (user == null)
                 return new List<Menu> {new Menu(MenuOption.Login)};
             // TODO real call to DB
-            result = user.Group == UserGroup.Admin
+            List<Menu> result = (user.Group == UserGroup.Admin)
                 ? new List<Menu>
                 {
                     new Menu(MenuOption.Login),
@@ -79,7 +77,7 @@ namespace FirstsStepsRUI.Repositories
             else
                 submitted = false;
 
-            return submitted;
+            return await Task.FromResult(submitted);
         }
     }
 }
