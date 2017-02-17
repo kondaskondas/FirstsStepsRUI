@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reactive;
 using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -6,6 +7,8 @@ using System.Windows;
 using FirstsStepsRUI.Models;
 using FirstsStepsRUI.Repositories;
 using ReactiveUI;
+using ReactiveUI.Legacy;
+using ReactiveCommand = ReactiveUI.ReactiveCommand;
 
 namespace FirstsStepsRUI.ViewModels
 {
@@ -14,7 +17,7 @@ namespace FirstsStepsRUI.ViewModels
         private readonly IUserRepository _userRepository;
         public string UrlPathSegment { get { return "User"; } }
         public IScreen HostScreen { get; protected set; }
-        public ReactiveCommand<bool> Submit { get; private set; }
+        public ReactiveCommand<Unit, bool> Submit { get; private set; }
 
 
         private User _model;
@@ -51,7 +54,7 @@ namespace FirstsStepsRUI.ViewModels
             HostScreen = screen;
             // Commands
             var canSubmit = this.WhenAny(e => e.Code, code => code.Value.IsValid());
-            Submit = ReactiveCommand.CreateAsyncTask(canSubmit, _ => userRepository.Submit(Model));
+            Submit = ReactiveCommand.CreateFromTask(_ => userRepository.Submit(Model), canSubmit);
             Submit.Subscribe(result => MessageBox.Show(result ? "Success" : "Failure"));
             // Observe on UI thread
             Submit.ThrownExceptions.ObserveOn(RxApp.MainThreadScheduler)
@@ -60,7 +63,7 @@ namespace FirstsStepsRUI.ViewModels
                 .Subscribe(resolution =>
                 {
                     if (resolution == RecoveryOptionResult.RetryOperation)
-                        Submit.Execute(null);
+                        Submit.Execute();
                 });
             // Model subscription
             this.WhenAnyValue(e => e.Model).Where(e => e != null).Subscribe(model =>

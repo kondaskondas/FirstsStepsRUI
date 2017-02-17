@@ -25,8 +25,12 @@ namespace FirstsStepsRUI.Views
         public MenuView()
         {
             InitializeComponent();
-            this.OneWayBind(ViewModel, vm => vm.Menu, v => v.SideMenu.ItemsSource);
-            this.Bind(ViewModel, vm => vm.SelectedOption, v => v.SideMenu.SelectedValue);
+            this.WhenActivated(d =>
+            {
+                d(this.OneWayBind(ViewModel, vm => vm.Menu, v => v.SideMenu.ItemsSource));
+                d(this.Bind(ViewModel, vm => vm.SelectedOption, v => v.SideMenu.SelectedValue));
+            });
+            
         }
     }
 }

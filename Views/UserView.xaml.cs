@@ -28,11 +28,16 @@ namespace FirstsStepsRUI.Views
         {
             InitializeComponent();
             Group.ItemsSource = Enum.GetValues(typeof(UserGroup));
-            this.WhenAnyValue(e => e.Group.SelectedValue).BindTo(this, e => e.ViewModel.Group);
-            this.Bind(ViewModel, vm => vm.Group, v => v.Group.SelectedValue);
-            this.Bind(ViewModel, vm => vm.Code, v => v.UserName.Text);
-            this.Bind(ViewModel, vm => vm.Message, v => v.Write.Text);
-            this.BindCommand(ViewModel, vm => vm.Submit, v => v.Submit);
+
+            this.WhenActivated(d =>
+            {
+                d(this.WhenAnyValue(e => e.Group.SelectedValue).BindTo(this, e => e.ViewModel.Group));
+                d(this.Bind(ViewModel, vm => vm.Group, v => v.Group.SelectedValue));
+                d(this.Bind(ViewModel, vm => vm.Code, v => v.UserName.Text));
+                d(this.Bind(ViewModel, vm => vm.Message, v => v.Write.Text));
+                d(this.BindCommand(ViewModel, vm => vm.Submit, v => v.Submit));
+            });
+          
         }
     }
 }

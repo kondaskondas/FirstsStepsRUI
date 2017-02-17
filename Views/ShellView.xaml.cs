@@ -25,8 +25,12 @@ namespace FirstsStepsRUI.Views
         {
             InitializeComponent();
             ViewModel = viewModel;
-            this.OneWayBind(ViewModel, vm => vm.MenuViewModel, v => v.Menu.ViewModel);
-            this.Bind(ViewModel, vm => vm.HostScreen.Router, v => v.ContentView.Router);
+            this.WhenActivated(d =>
+            {
+                d(this.OneWayBind(ViewModel, vm => vm.MenuViewModel, v => v.Menu.ViewModel));
+                d(this.Bind(ViewModel, vm => vm.HostScreen.Router, v => v.ContentView.Router));
+            });
+           
         }
     }
 }

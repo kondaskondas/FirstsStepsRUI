@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Linq;
 using FirstsStepsRUI.Models;
 using FirstsStepsRUI.Repositories;
@@ -14,7 +15,6 @@ namespace FirstsStepsRUI.ViewModels
         // Properties
         public string UrlPathSegment { get { return "Shell"; } }
         public IScreen HostScreen { get; protected set; }
-        public ReactiveCommand<object> LoadUser { get; protected set; }
         private User _user;
         public User User
         {
@@ -55,10 +55,10 @@ namespace FirstsStepsRUI.ViewModels
                 switch (e.Model.Option)
                 {
                     case MenuOption.Login:
-                        HostScreen.Router.Navigate.Execute(LoginViewModel);
+                        HostScreen.Router.NavigateAndReset.Execute(LoginViewModel);
                         break;
                     case MenuOption.User:
-                        HostScreen.Router.Navigate.Execute(new UserViewModel(HostScreen, User, _userRepository));
+                        HostScreen.Router.NavigateAndReset.Execute(new UserViewModel(HostScreen, User, _userRepository));
                         break;
                     case MenuOption.Placeholder:
                         HostScreen.Router.Navigate.Execute(new PlaceHolderViewModel(HostScreen));

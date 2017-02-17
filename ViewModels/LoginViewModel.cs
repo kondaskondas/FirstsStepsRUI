@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reactive;
 using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,7 +19,7 @@ namespace FirstsStepsRUI.ViewModels
         }
 
         private readonly IUserRepository _userRepository;
-        public ReactiveCommand<User> Login { get; protected set; }
+        public ReactiveCommand<Unit, User> Login { get; protected set; }
         private User _user;
         public User User
         {
@@ -45,14 +46,14 @@ namespace FirstsStepsRUI.ViewModels
             _userRepository = userRepository;
             var canSubmit = this.WhenAny(m => m.UserName, m => m.Password, (user, password) => user.Value.IsValid());
             // We use "_" because we don't use the parameter
-            Login = ReactiveCommand.CreateAsyncTask(canSubmit, _ => _userRepository.Login(UserName, Password.Password));
+            Login = ReactiveCommand.CreateFromTask(async () => await _userRepository.Login(UserName, Password.Password), canSubmit);
             Login.ObserveOn(RxApp.MainThreadScheduler).Subscribe(user =>
             {
                 User = user; 
                 HostScreen.Router.Navigate.Execute(new UserViewModel(HostScreen, user, _userRepository));
             });
             // TODO use UserError.RegisterHandler
-            Login.ThrownExceptions.ObserveOn(RxApp.MainThreadScheduler).Subscribe(e => MessageBox.Show(e.Message));
+            Login.ThrownExceptions.Subscribe(e => MessageBox.Show(e.Message));
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Reactive;
 using System.Reactive.Linq;
 using System.Windows;
 using FirstsStepsRUI.Models;
@@ -11,7 +13,7 @@ namespace FirstsStepsRUI.ViewModels
     public class MenuViewModel : ReactiveObject
     {
         private readonly IUserRepository _userRepository;
-        public ReactiveCommand<IList<Menu>> LoadMenu { get; protected set; }
+        public ReactiveCommand<User, IList<Menu>> LoadMenu { get; protected set; }
         public ReactiveList<MenuOptionViewModel> Menu { get; protected set; }
 
         private User _user;
@@ -37,7 +39,8 @@ namespace FirstsStepsRUI.ViewModels
             // Use WhenAny to observe one or more values
             var canLoadMenu = this.WhenAny(m => m.User, user => user.Value != null);
             // hook function to command, shouldn't contain UI/complex logic
-            LoadMenu = ReactiveCommand.CreateAsyncTask(canLoadMenu, _ => _userRepository.GetMenuByUser(User));
+            LoadMenu = ReactiveCommand.CreateFromTask<User, IList<Menu>>(async user => await _userRepository.GetMenuByUser(User),
+                canLoadMenu);
             // RxApp.MainThreadScheduler is our UI thread, you can go wild here
             LoadMenu.ObserveOn(RxApp.MainThreadScheduler).Subscribe(menu =>
             {

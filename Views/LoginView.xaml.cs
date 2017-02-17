@@ -32,8 +32,12 @@ namespace FirstsStepsRUI.Views
         {
             InitializeComponent();
             UserName.Focus();
-            this.Bind(ViewModel, vm => vm.UserName, v => v.UserName.Text);
-            this.BindCommand(ViewModel, vm => vm.Login, v => v.Login);
+            this.WhenActivated(d =>
+            {
+                d(this.Bind(ViewModel, vm => vm.UserName, v => v.UserName.Text));
+                d(this.BindCommand(ViewModel, vm => vm.Login, v => v.Login));
+            });
+
         }
     }
 }
